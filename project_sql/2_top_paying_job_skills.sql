@@ -8,31 +8,31 @@
 
 WITH top_paying_jobs AS (
     SELECT
-        job_id,
-        job_title,
-        salary_year_avg,
-        name AS company_name
+        j.job_id,
+        j.job_title,
+        j.salary_year_avg,
+        c.name AS company_name
     FROM 
-        job_postings_fact
-    LEFT JOIN company_dim ON job_postings_fact.company_id = company_dim.company_id
+        job_postings_fact j
+    LEFT JOIN company_dim c ON j.company_id = c.company_id
     WHERE
-        job_title_short = 'Data Analyst' AND
-        job_location = 'Anywhere' AND
-        salary_year_avg IS NOT NULL
+        j.job_title_short = 'Data Analyst' AND
+        j.job_location = 'Anywhere' AND
+        j.salary_year_avg IS NOT NULL
     ORDER BY
-        salary_year_avg DESC
+        j.salary_year_avg DESC
     LIMIT 10
 )
 
 SELECT 
-    top_paying_jobs.*,
-    skills_dim.skills
+    t.*,
+    s.skills
 FROM
-    top_paying_jobs
-INNER JOIN skills_job_dim ON top_paying_jobs.job_id = skills_job_dim.job_id
-INNER JOIN skills_dim ON skills_job_dim.skill_id = skills_dim.skill_id
+    top_paying_jobs t
+INNER JOIN skills_job_dim sj ON t.job_id = sj.job_id
+INNER JOIN skills_dim s ON sj.skill_id = s.skill_id
 ORDER BY
-    salary_year_avg DESC
+    t.salary_year_avg DESC;
 
 /*
     Here's the breakdown of the most demanded skills for data analysts in 2023, based on job postings:

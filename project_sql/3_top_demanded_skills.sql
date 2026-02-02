@@ -8,16 +8,16 @@
 */
 
 SELECT 
-    skills_dim.skills,
-    COUNT(skills_job_dim.job_id) AS demand_count
+    s.skills,
+    COUNT(sj.job_id) AS demand_count
 FROM
-    job_postings_fact
-INNER JOIN skills_job_dim ON job_postings_fact.job_id = skills_job_dim.job_id
-INNER JOIN skills_dim ON skills_job_dim.skill_id = skills_dim.skill_id
+    job_postings_fact j
+INNER JOIN skills_job_dim sj ON j.job_id = sj.job_id
+INNER JOIN skills_dim s ON sj.skill_id = s.skill_id
 WHERE
-    job_title_short = 'Data Analyst'
+    j.job_title_short = 'Data Analyst'
 GROUP BY
-    skills_dim.skills
+    s.skills
 ORDER BY
     demand_count DESC
-LIMIT 5
+LIMIT 5;
