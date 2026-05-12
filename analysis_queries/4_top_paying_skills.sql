@@ -8,6 +8,7 @@
 
 SELECT 
     s.skills,
+    COUNT(sj.job_id) AS skill_count,
     ROUND(AVG(j.salary_year_avg), 0) AS avg_salary
 FROM
     job_postings_fact j
@@ -18,127 +19,8 @@ WHERE
     AND j.salary_year_avg IS NOT NULL
 GROUP BY
     s.skills
+HAVING
+    COUNT(sj.job_id) > 10
 ORDER BY
     avg_salary DESC
-LIMIT 25
-
-/*
-    Here is a condensed, executive-level summary in 3 bullets, preserving the core insight:
-
-    - High pay reflects hybrid roles, not traditional analytics:
-      These salaries correspond to analytics engineers, ML/AI engineers, 
-      and infra-aware analysts. Compensation is driven by engineering scarcity 
-      and business criticality, not BI or dashboarding.
-
-    - Infrastructure, deployment, and production ML command premiums:
-      Skills in data pipelines, DevOps, distributed systems, and production ML 
-      (e.g. Airflow, Kafka, Terraform, ML platforms) are paid highly because they 
-      sit close to revenue-critical systems.
-
-    - Low-supply, high-impact skills drive outliers:
-      Languages, platforms, and even legacy tools earn high pay when they are rare 
-      and mission-critical, especially in finance, big tech, and trading environments.
-
-[
-  {
-    "skills": "svn",
-    "avg_salary": "400000"
-  },
-  {
-    "skills": "solidity",
-    "avg_salary": "179000"
-  },
-  {
-    "skills": "couchbase",
-    "avg_salary": "160515"
-  },
-  {
-    "skills": "datarobot",
-    "avg_salary": "155486"
-  },
-  {
-    "skills": "golang",
-    "avg_salary": "155000"
-  },
-  {
-    "skills": "mxnet",
-    "avg_salary": "149000"
-  },
-  {
-    "skills": "dplyr",
-    "avg_salary": "147633"
-  },
-  {
-    "skills": "vmware",
-    "avg_salary": "147500"
-  },
-  {
-    "skills": "terraform",
-    "avg_salary": "146734"
-  },
-  {
-    "skills": "twilio",
-    "avg_salary": "138500"
-  },
-  {
-    "skills": "gitlab",
-    "avg_salary": "134126"
-  },
-  {
-    "skills": "kafka",
-    "avg_salary": "129999"
-  },
-  {
-    "skills": "puppet",
-    "avg_salary": "129820"
-  },
-  {
-    "skills": "keras",
-    "avg_salary": "127013"
-  },
-  {
-    "skills": "pytorch",
-    "avg_salary": "125226"
-  },
-  {
-    "skills": "perl",
-    "avg_salary": "124686"
-  },
-  {
-    "skills": "ansible",
-    "avg_salary": "124370"
-  },
-  {
-    "skills": "hugging face",
-    "avg_salary": "123950"
-  },
-  {
-    "skills": "tensorflow",
-    "avg_salary": "120647"
-  },
-  {
-    "skills": "cassandra",
-    "avg_salary": "118407"
-  },
-  {
-    "skills": "notion",
-    "avg_salary": "118092"
-  },
-  {
-    "skills": "atlassian",
-    "avg_salary": "117966"
-  },
-  {
-    "skills": "bitbucket",
-    "avg_salary": "116712"
-  },
-  {
-    "skills": "airflow",
-    "avg_salary": "116387"
-  },
-  {
-    "skills": "scala",
-    "avg_salary": "115480"
-  }
-]
-*/
+LIMIT 25;
